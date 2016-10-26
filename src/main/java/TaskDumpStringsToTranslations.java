@@ -18,8 +18,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TaskDumpStringsToTranslations extends DefaultTask {
-    String stringsXMLPath = getProject().getProjectDir().getPath() + "\\res\\values\\strings.xml";
-    String translationsXMLPath = getProject().getProjectDir().getPath() + "\\res\\xml\\translations.xml";
+    private final XMLUtils XMLUtils = new XMLUtils();
+
+    private String stringsXMLPath = getProject().getProjectDir().getPath() + "\\res\\values\\strings.xml";
+    private String translationsXMLPath = getProject().getProjectDir().getPath() + "\\res\\xml\\translations.xml";
 
     public TaskDumpStringsToTranslations() {
         super();
@@ -28,29 +30,20 @@ public class TaskDumpStringsToTranslations extends DefaultTask {
 
     @TaskAction
     public void dumpStringsToTranslations() throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        Document strings_xml = instantateXMLParser(stringsXMLPath);
-        Document translations_xml = instantateXMLParser(translationsXMLPath);
+        Document strings_xml = XMLUtils.instantateXMLParser(stringsXMLPath);
+        Document translations_xml = XMLUtils.instantateXMLParser(translationsXMLPath);
 
         List<Node> missingTranslations = getListMissingTranslations(strings_xml, translations_xml);
         writeMissingTranslations(missingTranslations, translations_xml);
         replaceContentWithTranslationCode(missingTranslations, strings_xml);
-        saveChanges(translations_xml, translationsXMLPath);
-        saveChanges(strings_xml, stringsXMLPath);
+        XMLUtils.saveChanges(translations_xml, translationsXMLPath);
+        XMLUtils.saveChanges(strings_xml, stringsXMLPath);
     }
 
     private void replaceContentWithTranslationCode(List<Node> missingTranslations, Document strings_xml) {
         for (Node missingTranslation : missingTranslations) {
             missingTranslation.setTextContent(missingTranslation.getAttributes().getNamedItem("name").getNodeValue());
         }
-    }
-
-    private void saveChanges(Document xml, String path) throws TransformerException {
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-        DOMSource source = new DOMSource(xml);
-        StreamResult result = new StreamResult(new File(path));
-        transformer.transform(source, result);
     }
 
     private void writeMissingTranslations(List<Node> missingTranslations, Document translations_xml) {
@@ -89,14 +82,5 @@ public class TaskDumpStringsToTranslations extends DefaultTask {
                     equals(node.getAttributes().getNamedItem("name").getNodeValue())) return true;
         }
         return false;
-    }
-
-
-    private Document instantateXMLParser(String pathToXML) throws ParserConfigurationException, IOException, SAXException {
-        File stringsXML = new File(pathToXML);
-        if (!stringsXML.exists()) throw new RuntimeException("El archivo strings.xml no existe");
-        Document parsedInstance = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stringsXML);
-        parsedInstance.getDocumentElement().normalize();
-        return parsedInstance;
     }
 }
