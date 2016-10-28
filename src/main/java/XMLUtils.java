@@ -1,6 +1,9 @@
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -9,8 +12,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
 
 public class XMLUtils {
     public XMLUtils() {
@@ -26,6 +27,7 @@ public class XMLUtils {
     }
 
     Document instantateXMLParser(String pathToXML) throws ParserConfigurationException, IOException, SAXException {
+        System.out.println(pathToXML);
         File stringsXML = new File(pathToXML);
         if (!stringsXML.exists()) throw new RuntimeException("El archivo strings.xml no existe");
         Document parsedInstance = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stringsXML);

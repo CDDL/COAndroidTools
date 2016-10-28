@@ -7,21 +7,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 public class TaskDumpStringsToTranslations extends DefaultTask {
     private final XMLUtils XMLUtils = new XMLUtils();
 
-    private String stringsXMLPath = getProject().getProjectDir().getPath() + "\\res\\values\\strings.xml";
-    private String translationsXMLPath = getProject().getProjectDir().getPath() + "\\res\\xml\\translations.xml";
+    private String stringsXMLPath = getProject().getProjectDir().getPath() + File.separatorChar + "res" + File.separatorChar + "values" + File.separatorChar + File.separatorChar + "strings.xml";
+    private String translationsXMLPath = getProject().getProjectDir().getPath() + "res" + File.separatorChar + "xml" + File.separatorChar + "translations.xml";
 
     public TaskDumpStringsToTranslations() {
         super();
