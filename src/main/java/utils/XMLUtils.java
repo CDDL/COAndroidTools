@@ -1,3 +1,5 @@
+package utils;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -17,7 +19,7 @@ public class XMLUtils {
     public XMLUtils() {
     }
 
-    void saveChanges(Document xml, String path) throws TransformerException {
+    public void saveChanges(Document xml, String path) throws TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
@@ -26,7 +28,7 @@ public class XMLUtils {
         transformer.transform(source, result);
     }
 
-    Document instantateXMLParser(String pathToXML) throws ParserConfigurationException, IOException, SAXException {
+    public Document instantateXMLParser(String pathToXML) throws ParserConfigurationException, IOException, SAXException {
         System.out.println(pathToXML);
         File stringsXML = new File(pathToXML);
         if (!stringsXML.exists()) throw new RuntimeException("El archivo strings.xml no existe");

@@ -1,3 +1,4 @@
+package xmlTranslations;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
+import utils.XMLUtils;
 
 public class TaskDumpStringsToTranslations extends DefaultTask {
     private final XMLUtils XMLUtils = new XMLUtils();
